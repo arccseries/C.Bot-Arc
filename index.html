@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C:ARC - Bot Dashboard</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+  body{background:#0a0a0f;color:white;min-height:100vh;padding:20px}
+  .container{max-width:900px;margin:0 auto}
+  .header{text-align:center;padding:40px 0 20px}
+  .header h1{font-size:42px;background:linear-gradient(90deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .header p{color:#aaa;margin-top:10px;font-size:18px}
+  .card{background:#16161f;border:1px solid #2a2a3a;border-radius:16px;padding:24px;margin:15px 0}
+  .status{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:bold}
+  .dot{width:14px;height:14px;border-radius:50%;background:#22c55e;box-shadow:0 0 15px #22c55e;animation:pulse 1.5s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}
+  .mini{background:#1e1e2e;padding:18px;border-radius:12px;text-align:center}
+  .mini b{font-size:28px;display:block;margin-top:5px}
+  .mini span{color:#888;font-size:13px}
+  .btn{display:block;text-align:center;background:linear-gradient(90deg,#a855f7,#ec4899);color:white;text-decoration:none;padding:15px;border-radius:12px;font-weight:bold;margin-top:15px}
+  .btn2{background:#222;color:white}
+  .footer{text-align:center;color:#555;margin-top:30px;font-size:13px}
+  @media(max-width:600px){.grid{grid-template-columns:1fr}.header h1{font-size:32px}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>C:ARC</h1>
+    <p>Pengalaman Bot Lebih Baik Untuk Anda</p>
+  </div>
+
+  <div class="card">
+    <div class="status"><div class="dot" id="dot"></div><span id="statusText">Menghubungkan ke Pterodactyl...</span></div>
+    <div class="grid">
+      <div class="mini"><span>STATUS BOT</span><b id="botStatus">-</b></div>
+      <div class="mini"><span>UPTIME</span><b id="uptime">-</b></div>
+    </div>
+    <p id="msg" style="color:#888;margin-top:12px;font-size:14px;text-align:center">Mencoba mengambil data dari server...</p>
+    <a class="btn" href="http://gervhosting.my.id:5966" target="_blank">Buka Panel Pterodactyl</a>
+    <a class="btn btn2" href="https://wa.me/6281234567890" target="_blank">Chat Bot di WhatsApp</a>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:10px">✨ Fitur Bot</h3>
+    <p style="color:#aaa;line-height:1.8">✅ Auto Reply & Sticker<br>✅ Downloader TikTok / IG / YT<br>✅ AI Chat<br>✅ Game & Fun Menu<br>✅ Anti Link & Group Manager</p>
+  </div>
+
+  <div class="footer">© 2026 C:ARC Bot - Hosted on GitHub Pages | Powered by Pterodactyl</div>
+</div>
+
+<script>
+const API = "http://gervhosting.my.id:5966/api/status";
+async function cek(){
+  try{
+    const r = await fetch(API);
+    const d = await r.json();
+    document.getElementById('statusText').innerText = "Bot Online - Terhubung ke Pterodactyl";
+    document.getElementById('botStatus').innerText = d.status;
+    document.getElementById('uptime').innerText = Math.floor(d.uptime/60)+" menit";
+    document.getElementById('msg').innerText = d.message;
+  }catch(e){
+    document.getElementById('statusText').innerText = "Bot Offline / Pterodactyl Belum Online";
+    document.getElementById('dot').style.background="#ef4444";
+    document.getElementById('dot').style.boxShadow="0 0 15px #ef4444";
+    document.getElementById('botStatus').innerText = "Offline";
+    document.getElementById('uptime').innerText = "-";
+    document.getElementById('msg').innerText = "Server Pterodactyl sedang offline / port belum kebuka. Tapi website GitHub ini tetap kebuka!";
+  }
+}
+cek();
+setInterval(cek, 10000);
+</script>
+</body>
+</html>
